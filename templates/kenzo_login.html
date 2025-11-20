@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Kenzo Barbearia</title>
+    <link rel="stylesheet" href="/static/kenzo_login.css">
+    <link rel="shortcut icon" href="/static/imagens/kenzo_logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="/static/imagens/NaLamina.-fundo.jpg">
+</head>
+<body>
+    <div class="login-box">
+        <a href="https://www.instagram.com/zapdev_">
+            <img src="/static/imagens/kenzo_logo.png" alt="Kenzo_Logo" class="imagem"></a>
+        <h2 class="Kenzo">Kenzo</h2>
+
+        <form id="loginForm" action="/login" method="post" onsubmit="return verificarLogin(event)">
+            <label for="gmail">E-mail:</label>
+            <input type="email" id="gmail" name="gmail" placeholder="exemplo@gmail.com" required>
+
+            <label for="inputSenha">Senha:</label>
+
+            <!-- CAMPO DA SENHA AJUSTADO -->
+            <div class="campo-senha">
+                <input type="password" id="inputSenha" name="senha" placeholder="Senha" required>
+                <i id="toggleSenha" class="bi bi-eye-fill"></i>
+            </div>
+            <!-- FIM DA ALTERAÇÃO -->
+
+            <button type="submit">Entrar</button>
+            <p id="mensagem" style="text-align:center;">
+            </p>
+        </form>
+
+        <div class="cadastro">
+            <p><a href="{{ url_for('cadastro_pagina') }}">Cadastre-se</a></p>
+            <p><a href="{{ url_for('esqueciMinhaSenhaNaLamina') }}" id="forgotPassword">Esqueci minha senha</a></p>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script-teste.js') }}"></script>
+
+    <script>
+        // ========================
+        // FUNÇÃO DE MOSTRAR SENHA
+        // ========================
+        document.getElementById('toggleSenha').addEventListener('click', function () {
+            const senhaInput = document.getElementById('inputSenha');
+            const icon = document.getElementById('toggleSenha');
+
+            if (senhaInput.type === 'password') {
+                senhaInput.type = 'text';
+                icon.classList.remove('bi-eye-fill');
+                icon.classList.add('bi-eye-slash-fill');
+            } else {
+                senhaInput.type = 'password';
+                icon.classList.remove('bi-eye-slash-fill');
+                icon.classList.add('bi-eye-fill');
+            }
+        });
+    </script>
+
+</body>
+
+</html>

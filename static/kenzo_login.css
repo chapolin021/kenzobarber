@@ -1,0 +1,205 @@
+@charset "UTF-08";
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+@import url('https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..900;1,6..96,400..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+:root {
+    --cor001: #000000;
+    /* Black */
+    --cor002: #ffffff;
+    /* White */
+    --cor003: #D4AF37;
+    /* Gold Luxo */
+    --cor004: #C8A035;
+    /* Gold Intenso */
+    --cor005: #A8862A;
+    /* Gold Escuro */
+    --cor006: #E1C56E;
+    /* Gold Soft */
+    --cor007: #5A3C14;
+    /* Bronze Escuro */
+    --cor008: #7A551F;
+    /* Bronze Medio */
+    --cor009: #8B5E34;
+    /* Couro classico */
+    --font01: "Arial, Helvetica, sans-serif";
+    --font02: "Playfair Display", serif;
+    --font03: "Bodoni Moda", serif;
+}
+
+body {
+    background: url(imagens/NaLamina.-fundo.jpg);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: var(--cor002);
+}
+
+.NaLamina {
+    font-family: var(--font03);
+    font-size: 12px;
+}
+
+.login-box {
+    background-color: var(--cor001);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px rgba(14, 13, 13, 0.2);
+    width: 300px;
+}
+
+.imagem {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+    display: block;
+    transition: transform 0.20s linear;
+    cursor: pointer;
+    border-radius: 100%;
+}
+
+.imagem:hover {
+    transform: scale(1.2);
+}
+
+.imagem:hover {
+    border: 1px solid var(--cor006);
+    border-radius: 100px;
+}
+
+.login-box h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-family: var(--font01);
+}
+
+.login-box label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+/* --- visual da pagina pra texto e etc --- */
+.login-box input,
+.login-box select {
+    width: 95%;
+    margin-top: 10px;
+    padding: 8px;
+    background-color: #2a2a2a;
+    /* Cor de fundo mais escura para combinar */
+    border: 1px solid #4a4a4a;
+    /* Borda mais discreta */
+    border-radius: 8px;
+    /* Borda mais arredondada */
+    color: #f1f1f1;
+    transition: all 0.3s ease;
+}
+
+.login-box input:focus,
+.login-box select:focus {
+    outline: none;
+    border-color: var(--cor006);
+    box-shadow: 0 0 10px var(--cor003);
+}
+
+
+
+/* --- BOTÃO ATUALIZADO --- */
+.login-box button {
+    width: 200px;
+    margin: 20px auto 0px;
+    display: block;
+    padding: 10px;
+    background-color: var(--cor003);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-box button:hover {
+    background-color: #2fb35a;
+    transform: scale(1.05);
+}
+
+.login-box button:active {
+    transform: scale(1);
+    background-color: #298d50;
+}
+
+#mensagem {
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.cadastro {
+    text-align: center;
+}
+
+.cadastro a {
+    text-decoration: none;
+    color: var(--cor005);
+    font-weight: 500;
+    transition: all 0.75 ease;
+}
+
+.cadastro a:hover {
+    color: #008ecc;
+}
+
+.link {
+    text-decoration: none;
+}
+
+.login-box button:hover {
+    background-color: var(--cor005);
+}
+
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* --- CORRIGIR CAMPO BRANCO DE E-MAIL --- */
+/* Força a cor de fundo preta e cor do texto branca no campo de E-mail */
+.login-box input[type="email"] {
+    background-color: #2a2a2a !important;
+    color: #f1f1f1 !important;
+}
+
+
+.campo-senha {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    /* centraliza verticalmente */
+}
+
+.campo-senha input {
+    flex: 1;
+    /* ocupa todo o espaço disponível */
+    /*padding-right: 40px;  espaço para o olho */
+    /*height: 40px;        altura do input, ajustável */
+    box-sizing: border-box;
+}
+
+.campo-senha i {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #555;
+    margin-top: 10.5px
+}
