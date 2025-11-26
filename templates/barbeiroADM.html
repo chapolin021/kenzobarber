@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="/static/barbeiroADM.css">
+<link rel="shortcut icon" href="{{ url_for('static', filename='imagens/kenzo_logo.png') }}" type="image/x-icon">
+<title>Gerencimanto-Barbeiro</title>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    ✂️ <span>Kenzo</span> BARBEARIA
+  </div>
+  <div class="profile-logout">
+    <button>Sair</button>
+  </div>
+</header>
+
+<main>
+  <!-- Barbeiros -->
+  <section class="tab-content" id="barbeiros" style="display:block;">
+    <h1>Gerenciar Barbeiros</h1>
+    <p>Adicione e gerencie os barbeiros da equipe</p>
+    <button class="button-new" id="btnNovoBarbeiro">+ Novo Barbeiro</button>
+    <div class="barbeiros-list" id="barbeirosList">
+      <!-- Lista gerada por JS -->
+    </div>
+  </section>
+</main>
+
+<!-- Modal para cadastro de barbeiro -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal">
+    <button class="close-btn" aria-label="Fechar" id="modalCloseBtn">&times;</button>
+    <h2 id="modalTitle">Novo Barbeiro</h2>
+    <form id="formBarbeiro">
+      <label for="barbeiroNome">Nome Completo</label>
+      <input type="text" id="barbeiroNome" required maxlength="50" />
+
+      <label for="barbeiroIdade">Idade</label>
+      <input type="number" id="barbeiroIdade" required min="14" max="120" />
+
+      <label for="barbeiroExperiencia">Tempo de Experiência (anos)</label>
+      <input type="number" id="barbeiroExperiencia" required min="0" max="100" />
+
+      <label for="barbeiroCertificacoes">Certificações</label>
+      <textarea id="barbeiroCertificacoes" rows="3" placeholder="Descreva as certificações"></textarea>
+
+      <label for="barbeiroEmail">Email</label>
+      <input type="email" id="barbeiroEmail" required maxlength="60" />
+
+      <label for="barbeiroTelefone">Telefone</label>
+      <input type="text" id="barbeiroTelefone" required maxlength="20" placeholder="(00) 00000-0000" />
+
+      <label for="barbeiroFoto">Foto do Barbeiro</label>
+      <input type="file" id="barbeiroFoto" accept="image/*" />
+
+      <img id="fotoPreview" class="preview-photo" alt="Pré-visualização da foto" style="display:none;" />
+
+      <div class="buttons">
+        <button type="button" class="cancel-btn" id="btnCancelar">Cancelar</button>
+        <button type="submit" class="save-btn">Salvar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab-button');
+  const contents = document.querySelectorAll('.tab-content');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      contents.forEach(c => c.style.display = 'none');
+      tab.classList.add('active');
+      document.getElementById(tab.dataset.tab).style.display = 'block';
+    });
+  });
+
+  const barbeirosList = document.getElementById('barbeirosList');
+  const modalOverlay = document.getElementById('modalOverlay');
+  const btnNovoBarbeiro = document.getElementById('btnNovoBarbeiro');
+  const modalCloseBtn = document.getElementById('modalCloseBtn');
+  const btnCancelar = document.getElementById('btnCancelar');
+  const formBarbeiro = document.getElementById('formBarbeiro');
+  const barbeiroFotoInput = document.getElementById('barbeiroFoto');
+  const fotoPreview = document.getElementById('fotoPreview');
+
+  let barbeiros = [];
+
+  function renderBarbeiros() {
+    barbeirosList.innerHTML = '';
+    if(barbeiros.length === 0) {
+      barbeirosList.innerHTML = '<p>Sem barbeiros cadastrados.</p>';
+      return;
+    }
+    barbeiros.forEach((b, i) => {
+      const div = document.createElement('div');
+      div.className = 'barbeiro-item';
+      div.innerHTML = `
+        <img src="${b.foto || 'https://via.placeholder.com/100?text=Foto'}" alt="Foto de ${b.nome}" class="barbeiro-photo" />
+        <div class="barbeiro-details">
+          <div class="barbeiro-name">${b.nome}</div>
+          <div class="barbeiro-info"><strong>Idade:</strong> ${b.idade} anos</div>
+          <div class="barbeiro-info"><strong>Experiência:</strong> ${b.experiencia} anos</div>
+          <div class="barbeiro-info"><strong>Certificações:</strong> ${b.certificacoes || '-'}</div>
+          <div class="barbeiro-info"><strong>Email:</strong> ${b.email}</div>
+          <div class="barbeiro-info"><strong>Telefone:</strong> ${b.telefone}</div>
+        </div>
+        <button class="btn-remove" onclick="removerBarbeiro(${i})" aria-label="Remover barbeiro ${b.nome}">Remover</button>
+      `;
+      barbeirosList.appendChild(div);
+    });
+  }
+
+  function abrirModal() {
+    modalOverlay.classList.add('active');
+    formBarbeiro.reset();
+    fotoPreview.style.display = 'none';
+    fotoPreview.src = '';
+  }
+
+  function fecharModal() {
+    modalOverlay.classList.remove('active');
+  }
+
+  btnNovoBarbeiro.addEventListener('click', abrirModal);
+  modalCloseBtn.addEventListener('click', fecharModal);
+  btnCancelar.addEventListener('click', fecharModal);
+  modalOverlay.addEventListener('click', e => {
+    if(e.target === modalOverlay) fecharModal();
+  });
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape' && modalOverlay.classList.contains('active')) fecharModal();
+  });
+
+  barbeiroFotoInput.addEventListener('change', e => {
+    const file = e.target.files[0];
+    if(!file || !file.type.startsWith('image/')) {
+      fotoPreview.style.display = 'none';
+      fotoPreview.src = '';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      fotoPreview.src = reader.result;
+      fotoPreview.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  });
+
+  formBarbeiro.addEventListener('submit', e => {
+    e.preventDefault();
+    const nome = formBarbeiro.barbeiroNome.value.trim();
+    const idade = parseInt(formBarbeiro.barbeiroIdade.value);
+    const experiencia = parseInt(formBarbeiro.barbeiroExperiencia.value);
+    const certificacoes = formBarbeiro.barbeiroCertificacoes.value.trim();
+    const email = formBarbeiro.barbeiroEmail.value.trim();
+    const telefone = formBarbeiro.barbeiroTelefone.value.trim();
+    const foto = fotoPreview.src || null;
+
+    if(nome.length === 0 || isNaN(idade) || isNaN(experiencia) || email.length === 0 || telefone.length === 0) {
+      alert('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
+    barbeiros.push({ nome, idade, experiencia, certificacoes, email, telefone, foto });
+    renderBarbeiros();
+    fecharModal();
+  });
+
+  function removerBarbeiro(i) {
+    if(confirm(`Deseja remover o barbeiro "${barbeiros[i].nome}"?`)) {
+      barbeiros.splice(i, 1);
+      renderBarbeiros();
+    }
+  }
+
+  renderBarbeiros();
+</script>
+
+</body>
+</html>

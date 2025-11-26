@@ -29,7 +29,10 @@
 }
 
 body {
-    background: url(imagens/NaLamina.-fundo.jpg);
+    background: url(imagens/kenzo-barbearia-fundo.png);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -41,7 +44,7 @@ body {
     font-family: var(--font03);
     font-size: 12px;
 }
-
+cfdxdc
 .login-box {
     background-color: var(--cor001);
     padding: 30px;
